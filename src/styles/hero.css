@@ -116,10 +116,11 @@
   color: var(--text-primary);
 }
 
-/* Canvas block sized so the auto-fit wordmark keeps poster scale */
+/* Canvas block: two lines, auto-fit to width, capped by viewport so the
+   poster composition still fits without scrolling */
 .hero__name-canvas {
   display: block;
-  height: clamp(150px, 26vw, 420px);
+  height: clamp(140px, min(34vw, 46svh), 660px);
 }
 
 /* Bottom register */
@@ -179,10 +180,6 @@
 
 /* Short viewports: the poster must still fit without scrolling */
 @media (max-height: 720px) and (min-width: 901px) {
-  .hero__name-canvas {
-    height: clamp(130px, 20vw, 300px);
-  }
-
   .hero__body {
     padding-top: clamp(1.5rem, 4vh, 2.5rem);
     gap: var(--space-md);

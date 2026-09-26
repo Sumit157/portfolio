@@ -6,6 +6,7 @@ export interface TechTextSettings {
   fontWeight: number;
   fontSize: number;
   letterSpacing: number;
+  lineAlign: 'left' | 'center';
   color: string;
   accentColor: string;
   reach: number;
@@ -30,7 +31,6 @@ export interface TechTextProps extends Partial<TechTextSettings> {
 
 interface Word {
   size: number;
-  baseline: number;
   left: number;
   right: number;
   top: number;
@@ -46,6 +46,7 @@ interface Sprite {
 interface Glyph {
   char: string;
   x: number;
+  baseline: number;
   box: { x1: number; y1: number; x2: number; y2: number };
   offset: { x: number; y: number };
   velocity: { x: number; y: number };
@@ -58,6 +59,7 @@ const LABEL_FONT = '10px ui-monospace, SFMono-Regular, Menlo, Consolas, monospac
 const FALLOFF_STEPS = 8;
 const SPRING = 320;
 const DAMPING = 22;
+const LINE_ADVANCE = 0.86;
 
 const approach = (current: number, target: number, dt: number, seconds: number) =>
   current + (target - current) * (1 - Math.exp(-dt / seconds));
@@ -91,6 +93,8 @@ const signed = (value: number) =>
 /*
   Wordmark drawn on a canvas: letters turn into dashed vector paths under the
   cursor, any letter can be dragged off the baseline and springs back.
+  Newline-separated lines share one canvas; each line is centred against the
+  widest line when lineAlign is 'center'.
   Stops its animation loop when idle or off-screen; honours reduced motion
   by keeping the automatic sweep off.
 */
@@ -100,6 +104,7 @@ export function TechText({
   fontWeight = 600,
   fontSize = 150,
   letterSpacing = -0.05,
+  lineAlign = 'left',
   color = '#ffffff',
   accentColor = '#ffffff',
   reach = 200,
@@ -130,6 +135,7 @@ export function TechText({
       fontWeight,
       fontSize,
       letterSpacing,
+      lineAlign,
       color,
       accentColor,
       reach,
@@ -220,15 +226,15 @@ export function TechText({
         c.lineCap = 'butt';
         c.strokeStyle = s.color;
         if (s.lineStyle !== 'solid') c.setLineDash([Math.max(1, s.dashLength), Math.max(1, s.dashGap)]);
-        c.strokeText(glyph.char, glyph.x, view.baseline);
+        c.strokeText(glyph.char, glyph.x, glyph.baseline);
         c.setLineDash([]);
         c.globalCompositeOperation = 'destination-out';
         c.fillStyle = '#000000';
-        c.fillText(glyph.char, glyph.x, view.baseline);
+        c.fillText(glyph.char, glyph.x, glyph.baseline);
         c.globalCompositeOperation = 'source-over';
       } else {
         c.fillStyle = s.color;
-        c.fillText(glyph.char, glyph.x, view.baseline);
+        c.fillText(glyph.char, glyph.x, glyph.baseline);
       }
       return { image, left, top };
     };
@@ -240,6 +246,7 @@ export function TechText({
         s.fontWeight,
         s.fontSize,
         s.letterSpacing,
+        s.lineAlign,
         s.color,
         s.dashLength,
         s.dashGap,
@@ -258,62 +265,83 @@ export function TechText({
       }
 
       const probe = scratchCtx;
+      const lines = s.text.split('\n');
       setFont(probe, s, s.fontSize);
-      let m = probe.measureText(s.text);
+      const probeMetrics = lines.map((line) => probe.measureText(line));
+      const probeInks = probeMetrics.map(
+        (m) => m.actualBoundingBoxLeft + m.actualBoundingBoxRight
+      );
+      const probeWidth = Math.max(...probeInks);
+      const probeHeight =
+        LINE_ADVANCE * s.fontSize * (lines.length - 1) +
+        probeMetrics[0].actualBoundingBoxAscent +
+        probeMetrics[probeMetrics.length - 1].actualBoundingBoxDescent;
       const fit = Math.min(
         1,
-        (width * 0.9) / Math.max(m.actualBoundingBoxLeft + m.actualBoundingBoxRight, 1),
-        (height * 0.66) / Math.max(m.actualBoundingBoxAscent + m.actualBoundingBoxDescent, 1)
+        (width * 0.9) / Math.max(probeWidth, 1),
+        (height * 0.66) / Math.max(probeHeight, 1)
       );
       const size = s.fontSize * fit;
       setFont(probe, s, size);
-      m = probe.measureText(s.text);
-      const inkWidth = m.actualBoundingBoxLeft + m.actualBoundingBoxRight;
-      const inkHeight = m.actualBoundingBoxAscent + m.actualBoundingBoxDescent;
-      const x = (width - inkWidth) / 2 + m.actualBoundingBoxLeft;
-      const baseline = (height - inkHeight) / 2 + m.actualBoundingBoxAscent;
+      const metrics = lines.map((line) => probe.measureText(line));
+      const inks = metrics.map(
+        (m) => m.actualBoundingBoxLeft + m.actualBoundingBoxRight
+      );
+      const inkWidth = Math.max(...inks);
+      const ascent = metrics[0].actualBoundingBoxAscent;
+      const descent = metrics[metrics.length - 1].actualBoundingBoxDescent;
+      const inkHeight = LINE_ADVANCE * size * (lines.length - 1) + ascent + descent;
+      const blockX = (width - inkWidth) / 2;
+      const blockTop = (height - inkHeight) / 2;
       const next: Word = {
         size,
-        baseline,
-        left: x - m.actualBoundingBoxLeft,
-        right: x + m.actualBoundingBoxRight,
-        top: baseline - m.actualBoundingBoxAscent,
-        bottom: baseline + m.actualBoundingBoxDescent,
+        left: blockX,
+        right: blockX + inkWidth,
+        top: blockTop,
+        bottom: blockTop + inkHeight,
       };
       word = next;
 
-      const chars = Array.from(s.text);
       const previous = glyphs;
       glyphs = [];
-      let prefix = '';
-      chars.forEach((char) => {
-        prefix += char;
-        const own = probe.measureText(char);
-        const gx = x + probe.measureText(prefix).width - own.width;
-        if (!char.trim()) return;
-        const base: Glyph = {
-          char,
-          x: gx,
-          box: {
-            x1: gx - own.actualBoundingBoxLeft,
-            y1: baseline - own.actualBoundingBoxAscent,
-            x2: gx + own.actualBoundingBoxRight,
-            y2: baseline + own.actualBoundingBoxDescent,
-          },
-          offset: { x: 0, y: 0 },
-          velocity: { x: 0, y: 0 },
-          outline: 0,
-          fill: { image: document.createElement('canvas'), left: 0, top: 0 },
-          dashes: { image: document.createElement('canvas'), left: 0, top: 0 },
-        };
-        const kept = previous[glyphs.length];
-        const settled: Glyph = {
-          ...base,
-          offset: kept?.char === char ? kept.offset : { x: 0, y: 0 },
-        };
-        settled.fill = sprite(s, next, settled, false);
-        settled.dashes = sprite(s, next, settled, true);
-        glyphs.push(settled);
+      lines.forEach((line, lineIndex) => {
+        const lineMetrics = metrics[lineIndex];
+        const indent =
+          s.lineAlign === 'center' ? (inkWidth - inks[lineIndex]) / 2 : 0;
+        const originX = blockX + indent + lineMetrics.actualBoundingBoxLeft;
+        const baseline =
+          blockTop + lineMetrics.actualBoundingBoxAscent + LINE_ADVANCE * size * lineIndex;
+        let prefix = '';
+        Array.from(line).forEach((char) => {
+          prefix += char;
+          const own = probe.measureText(char);
+          const gx = originX + probe.measureText(prefix).width - own.width;
+          if (!char.trim()) return;
+          const base: Glyph = {
+            char,
+            x: gx,
+            baseline,
+            box: {
+              x1: gx - own.actualBoundingBoxLeft,
+              y1: baseline - own.actualBoundingBoxAscent,
+              x2: gx + own.actualBoundingBoxRight,
+              y2: baseline + own.actualBoundingBoxDescent,
+            },
+            offset: { x: 0, y: 0 },
+            velocity: { x: 0, y: 0 },
+            outline: 0,
+            fill: { image: document.createElement('canvas'), left: 0, top: 0 },
+            dashes: { image: document.createElement('canvas'), left: 0, top: 0 },
+          };
+          const kept = previous[glyphs.length];
+          const settled: Glyph = {
+            ...base,
+            offset: kept?.char === char ? kept.offset : { x: 0, y: 0 },
+          };
+          settled.fill = sprite(s, next, settled, false);
+          settled.dashes = sprite(s, next, settled, true);
+          glyphs.push(settled);
+        });
       });
       dragging = -1;
       frame.index = -1;
@@ -325,6 +353,8 @@ export function TechText({
       let best = -1;
       let bestDistance = Infinity;
       glyphs.forEach((glyph, i) => {
+        if (y < glyph.box.y1 + glyph.offset.y - 24 || y > glyph.box.y2 + glyph.offset.y + 24)
+          return;
         const x1 = glyph.box.x1 + glyph.offset.x;
         const x2 = glyph.box.x2 + glyph.offset.x;
         const d = x < x1 ? x1 - x : x > x2 ? x - x2 : 0;
@@ -758,7 +788,7 @@ export function TechText({
       className={`tech-text ${className}`.trim()}
       style={style}
       role="img"
-      aria-label={text}
+      aria-label={text.replace(/\n+/g, ' ')}
     >
       <canvas ref={canvasRef} className="tech-text-canvas" />
     </div>

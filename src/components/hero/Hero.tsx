@@ -76,10 +76,11 @@ export function Hero() {
         <h1 className="hero__name" id="hero-title" aria-label={siteConfig.name}>
           <span className="hero__name-canvas">
             <TechText
-              text={siteConfig.name.toUpperCase()}
+              text={siteConfig.name.toUpperCase().replace(' ', '\n')}
               fontWeight={600}
               fontSize={150}
               letterSpacing={-0.05}
+              lineAlign="center"
               color="#f2f2f2"
               accentColor="#f2f2f2"
               reach={200}
