@@ -1,32 +1,68 @@
-# React + TypeScript + Vite
+# Sumit Dilip Babar — Portfolio
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Personal developer portfolio and engineering showcase for **Sumit Dilip Babar**, Software Engineer. A dark editorial single-page site: oversized typography, hairline rules, mono annotations, and restrained motion — built to present real projects as case studies rather than a résumé in card form.
 
-Currently, two official plugins are available:
+**Sections:** Hero → About → Selected Work → Lab → Stack → Contact
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Highlights
 
-## React Compiler
+- **Canvas hero wordmark** — the name is drawn on a canvas (React Bits `TechText`): letters turn into dashed vector paths on hover, can be dragged and spring back, with an idle sweep and selection frame
+- **Scroll choreography** — GSAP timelines + ScrollTrigger, driven by Lenis smooth scrolling, all guarded by `prefers-reduced-motion`
+- **Glow cursor** — WebGL pointer trail (React Bits `GlowCursor` via `ogl`), fine pointers only, render loop sleeps when idle
+- **Footer marquee** — infinite `LogoLoop` of the technology stack, pausing on hover, edge-faded into the page background
+- **Accessibility** — semantic structure, skip link, visible focus states, keyboard-reachable interactions, reduced-motion support
+- **Content-driven** — every project, stack, and link lives in typed data files under `src/data/`
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Tech stack
 
-## Expanding the Oxlint configuration
+| Layer     | Choice                                              |
+| --------- | --------------------------------------------------- |
+| Build     | [Vite](https://vite.dev) + [React 19](https://react.dev) |
+| Language  | TypeScript, type-checked builds via `tsc -b`         |
+| Motion    | GSAP + ScrollTrigger, Lenis                         |
+| WebGL     | ogl (hero glow cursor)                              |
+| Linting   | [Oxlint](https://oxc.rs/docs/guide/usage/linter)    |
+| Styling   | Hand-rolled CSS — design tokens in `src/styles/variables.css` |
 
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
+## Getting started
 
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+```bash
+npm install
+npm run dev      # start dev server (http://localhost:5173)
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+Other scripts:
+
+```bash
+npm run build    # typecheck (tsc -b) + production build
+npm run lint     # Oxlint
+npm run preview  # serve the production build
+```
+
+Requires Node.js and npm.
+
+## Project structure
+
+```text
+src/
+├── animations/     # GSAP hooks, scroll helpers, page-load transitions
+├── components/
+│   ├── layout/     # page shell, navigation, smooth-scroll provider
+│   ├── hero/       # hero composition + canvas wordmark
+│   ├── about/      # about section
+│   ├── projects/   # case studies, plates, project figures
+│   ├── lab/        # experiments section
+│   ├── stack/      # technology stack section
+│   ├── contact/    # contact section
+│   ├── navigation/ # header + mobile menu
+│   └── ui/         # shared primitives (TechText, LogoLoop, GlowCursor, Tag, …)
+├── data/           # all site content — projects, stack, links, education
+├── hooks/          # reduced motion, magnetic hover, smooth scroll
+└── styles/         # tokens + one stylesheet per section (imported via globals.css)
+```
+
+## Content & documentation
+
+- All copy and project data are owner-supplied and typed — edit `src/data/*` to change what the site says.
+- [`DESIGN.md`](./DESIGN.md) — the visual source of truth (colour, type, grid, motion).
+- [`AGENTS.md`](./AGENTS.md) — engineering rules for working on this codebase.
