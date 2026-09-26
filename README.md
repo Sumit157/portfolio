@@ -62,7 +62,3 @@ src/
 ```
 
 ## Content & documentation
-
-- All copy and project data are owner-supplied and typed — edit `src/data/*` to change what the site says.
-- [`DESIGN.md`](./DESIGN.md) — the visual source of truth (colour, type, grid, motion).
-- [`AGENTS.md`](./AGENTS.md) — engineering rules for working on this codebase.
