@@ -11,6 +11,8 @@
 @import './stack.css';
 @import './contact.css';
 @import './techtext.css';
+@import './logoloop.css';
+@import './glowcursor.css';
 
 /*
   Film grain — DESIGN.md §24. Static (no animation): continuous repaint on a
@@ -78,6 +80,20 @@
 /* Footer register — copyright, channels, technical note */
 .site-footer {
   border-top: var(--rule-strong);
+}
+
+/* Stack marquee above the footer register */
+.site-footer__loop {
+  padding-block: clamp(1.1rem, 2.5vw, 1.5rem);
+  border-bottom: var(--rule-hair);
+}
+
+.site-footer__loop .logoloop__item {
+  font-family: var(--font-mono);
+  font-size: var(--text-meta);
+  letter-spacing: var(--track-meta);
+  text-transform: uppercase;
+  color: var(--text-muted);
 }
 
 .site-footer__inner {
