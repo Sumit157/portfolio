@@ -1,7 +1,7 @@
 /*
   Hero — a full-viewport poster composition (DESIGN.md §10).
   Register top: colophon left / statement right.
-  Register bottom: the name, stepped off the margin.
+  Register bottom: the name, drawn as a canvas wordmark (TechText).
   Register edge: rule + scroll / index cue.
   Must read correctly with every animation disabled.
 */
@@ -108,34 +108,18 @@
   max-width: 34ch;
 }
 
-/* The name — stepped off the left margin */
+/* The name — the wordmark itself is drawn on a canvas (TechText) */
 .hero__name {
-  --col: calc(
-    (100% - (var(--grid-columns) - 1) * var(--grid-gap)) / var(--grid-columns)
-  );
   margin: 0;
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: var(--text-hero);
-  line-height: 0.86;
-  letter-spacing: var(--track-display);
   color: var(--text-primary);
 }
 
-.hero__name-line {
+/* Canvas block sized so the auto-fit wordmark keeps poster scale */
+.hero__name-canvas {
   display: block;
-  overflow: hidden;
-}
-
-/* The short line steps off the margin; the long line stays flush so the
-   name never overruns the measure (DESIGN.md §10). */
-.hero__name-line--step {
-  padding-left: calc(3 * (var(--col) + var(--grid-gap)));
-}
-
-.hero__name-word {
-  display: block;
-  will-change: transform;
+  height: clamp(150px, 26vw, 420px);
 }
 
 /* Bottom register */
@@ -174,12 +158,6 @@
   color: var(--text-secondary);
 }
 
-@media (max-width: 1024px) {
-  .hero__name-line--step {
-    padding-left: calc(2 * (var(--col) + var(--grid-gap)));
-  }
-}
-
 @media (max-width: 900px) {
   .hero__top {
     gap: var(--space-md);
@@ -197,16 +175,12 @@
   .hero__statement-text {
     max-width: 46ch;
   }
-
-  .hero__name-line--step {
-    padding-left: calc(1 * (var(--col) + var(--grid-gap)));
-  }
 }
 
 /* Short viewports: the poster must still fit without scrolling */
 @media (max-height: 720px) and (min-width: 901px) {
-  .hero__name {
-    font-size: clamp(3rem, 9vw, 8rem);
+  .hero__name-canvas {
+    height: clamp(130px, 20vw, 300px);
   }
 
   .hero__body {

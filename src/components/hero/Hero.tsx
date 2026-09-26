@@ -1,6 +1,7 @@
 import { useLayoutEffect, useRef } from 'react';
 import { useGSAP } from '@/animations/gsap/useGSAP';
 import { useLenis } from '@/components/layout/ScrollProvider';
+import { TechText } from '@/components/ui/TechText';
 import { siteConfig } from '@/data/site';
 
 const facts = [
@@ -32,10 +33,10 @@ export function Hero() {
     const ctx = gsap.context(() => {
       const tl = createTimeline({ defaults: { ease: 'power4.out' } });
 
-      tl.from('.hero__name-word', {
-        yPercent: 118,
-        duration: 1.25,
-        stagger: 0.1,
+      tl.from('.hero__name', {
+        y: 44,
+        opacity: 0,
+        duration: 1.2,
       })
         .from(
           '[data-hero-fade]',
@@ -72,12 +73,29 @@ export function Hero() {
           </div>
         </div>
 
-        <h1 className="hero__name" id="hero-title">
-          <span className="hero__name-line hero__name-line--step">
-            <span className="hero__name-word">SUMIT</span>
-          </span>
-          <span className="hero__name-line">
-            <span className="hero__name-word">DILIP BABAR</span>
+        <h1 className="hero__name" id="hero-title" aria-label={siteConfig.name}>
+          <span className="hero__name-canvas">
+            <TechText
+              text={siteConfig.name.toUpperCase()}
+              fontWeight={600}
+              fontSize={150}
+              letterSpacing={-0.05}
+              color="#f2f2f2"
+              accentColor="#f2f2f2"
+              reach={200}
+              softness={0.7}
+              strokeWidth={1.5}
+              lineStyle="dashed"
+              reveal="letter"
+              dashLength={4}
+              dashGap={2}
+              specks={15}
+              selection
+              labels
+              draggable
+              sweep
+              speed={1}
+            />
           </span>
         </h1>
       </div>
