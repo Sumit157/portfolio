@@ -10,9 +10,9 @@ function App() {
   return (
     <Layout>
       <Hero />
+      <AboutSection />
       <ProjectsSection />
       <LabSection />
-      <AboutSection />
       <StackSection />
       <ContactSection />
     </Layout>

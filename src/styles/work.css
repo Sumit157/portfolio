@@ -28,6 +28,15 @@
   padding-bottom: clamp(3.5rem, 7vw, 6rem);
 }
 
+/* The wide composition gives its figure the widest share of the grid */
+.case--wide {
+  --plate-span: 6;
+}
+
+.case--wide.case--medium {
+  --plate-span: 5;
+}
+
 .case__head {
   display: grid;
   grid-template-columns: repeat(var(--grid-columns), minmax(0, 1fr));
@@ -124,16 +133,19 @@
   grid-row: 1;
 }
 
+/*
+  Third composition: the figure stays beside the text on the same row, but
+  claims the widest slice of the grid — flush to the right margin, one gutter
+  off the text, so it reads differently from both inline and flip.
+*/
 .case--wide .case__text {
   grid-column: 1 / span 5;
   grid-row: 1;
 }
 
-/* Indented past centre on a second row: a deliberate grid break */
 .case--wide .case__plate {
-  grid-column: 7 / span var(--plate-span);
-  grid-row: 2;
-  margin-top: clamp(2rem, 4vw, 3.5rem);
+  grid-column: span var(--plate-span) / -1;
+  grid-row: 1;
 }
 
 .case__label {
@@ -331,6 +343,15 @@
     --plate-span: 3;
   }
 
+  /* Wide keeps its figure beside the text here too, capped at half the grid */
+  .case--wide {
+    --plate-span: 4;
+  }
+
+  .case--wide.case--medium {
+    --plate-span: 3;
+  }
+
   .case__head,
   .case__body {
     grid-template-columns: repeat(8, minmax(0, 1fr));
@@ -367,8 +388,7 @@
   }
 
   .case--wide .case__plate {
-    grid-column: 4 / span var(--plate-span);
-    margin-top: clamp(1.5rem, 3vw, 2.5rem);
+    grid-column: span var(--plate-span) / -1;
   }
 }
 
