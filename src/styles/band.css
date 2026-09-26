@@ -1,0 +1,30 @@
+/*
+  Section band — the transition between major sections (DESIGN.md §12).
+  Title, apparatus counter, ticked rule. Shared by Work, Lab, About, Stack,
+  Contact so every section opens with the same rhythm.
+*/
+
+.band {
+  border-top: var(--rule-strong);
+  padding-top: clamp(2.5rem, 6vw, 5.5rem);
+}
+
+.band__inner {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-md);
+}
+
+.band__title {
+  margin: 0;
+}
+
+.band__meta {
+  white-space: nowrap;
+}
+
+.band__ruler {
+  margin-top: clamp(1.5rem, 3vw, 2.75rem);
+  border-bottom: var(--rule-hair);
+}

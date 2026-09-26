@@ -1,0 +1,120 @@
+@import './variables.css';
+@import './reset.css';
+@import './typography.css';
+@import './layout.css';
+@import './band.css';
+@import './navigation.css';
+@import './hero.css';
+@import './work.css';
+@import './lab.css';
+@import './about.css';
+@import './stack.css';
+@import './contact.css';
+
+/*
+  Film grain — DESIGN.md §24. Static (no animation): continuous repaint on a
+  scrolling layer costs mobile GPU for no compositional gain.
+*/
+.grain-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 90;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-size: 256px 256px;
+}
+
+/* Monospace link with a travelling arrow (DESIGN.md §27) */
+.link-arrow {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  font-family: var(--font-mono);
+  font-size: var(--text-meta);
+  font-weight: 400;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: var(--track-meta);
+  transition:
+    color var(--duration-fast) var(--ease-out-cubic),
+    gap var(--duration-fast) var(--ease-out-cubic);
+}
+
+.link-arrow svg {
+  transition: transform var(--duration-base) var(--ease-out-expo);
+}
+
+.link-arrow:hover {
+  color: var(--accent);
+  gap: var(--space-sm);
+}
+
+.link-arrow:hover svg {
+  transform: translateX(2px);
+}
+
+.link-arrow:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+  color: var(--accent);
+}
+
+.divider {
+  width: 100%;
+  height: 1px;
+  background: var(--border-subtle);
+}
+
+.divider--strong {
+  background: var(--border-strong);
+}
+
+.divider--short {
+  width: 60px;
+}
+
+/* Footer register — copyright, channels, technical note */
+.site-footer {
+  border-top: var(--rule-strong);
+}
+
+.site-footer__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm) var(--space-md);
+  flex-wrap: wrap;
+  padding-block: var(--space-md);
+}
+
+.site-footer__links {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  flex-wrap: wrap;
+}
+
+.site-footer__links a {
+  color: var(--text-muted);
+  transition: color var(--duration-fast) var(--ease-out-cubic);
+}
+
+.site-footer__links a:hover {
+  color: var(--accent);
+}
+
+.site-footer__links a:focus-visible {
+  color: var(--accent);
+}
+
+.site-footer__meta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+}
+
+.site-footer__sep {
+  color: var(--text-muted);
+}

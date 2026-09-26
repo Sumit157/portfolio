@@ -1,0 +1,125 @@
+/*
+  Lab — unshipped work. Same armature as Selected Work, but the entries
+  alternate their apparatus: index and status swap sides down the list so the
+  section reads as a working notebook rather than a repeat of the case studies.
+*/
+
+.lab {
+  display: block;
+  padding-bottom: clamp(4rem, 9vw, 8rem);
+}
+
+.lab__note {
+  margin: clamp(2rem, 4vw, 3rem) 0 0;
+  max-width: 62ch;
+}
+
+.lab__list {
+  margin: clamp(2.5rem, 5vw, 4rem) 0 0;
+}
+
+.lab__entry {
+  display: grid;
+  grid-template-columns: repeat(var(--grid-columns), minmax(0, 1fr));
+  gap: var(--grid-gap);
+  align-items: baseline;
+  padding-block: clamp(1.5rem, 3vw, 2.5rem);
+  border-top: var(--rule-hair);
+}
+
+.lab__entry:last-child {
+  border-bottom: var(--rule-hair);
+}
+
+.lab__entry > * {
+  grid-row: 1;
+}
+
+.lab__index {
+  grid-column: 1 / span 2;
+  color: var(--text-muted);
+}
+
+.lab__title {
+  grid-column: 3 / span 7;
+  margin: 0;
+}
+
+.lab__kind {
+  grid-column: 11 / span 2;
+  text-align: right;
+}
+
+/* Odd rows mirror the apparatus */
+.lab__entry--offset .lab__index {
+  grid-column: 12 / span 1;
+  text-align: right;
+}
+
+.lab__entry--offset .lab__title {
+  grid-column: 3 / span 8;
+}
+
+.lab__entry--offset .lab__kind {
+  grid-column: 1 / span 2;
+  text-align: left;
+}
+
+@media (max-width: 1024px) {
+  .lab__entry {
+    grid-template-columns: repeat(8, minmax(0, 1fr));
+    gap: 1.25rem;
+  }
+
+  .lab__index {
+    grid-column: 1 / span 1;
+  }
+
+  .lab__title {
+    grid-column: 2 / span 5;
+  }
+
+  .lab__kind {
+    grid-column: 7 / span 2;
+  }
+
+  .lab__entry--offset .lab__index {
+    grid-column: 8 / span 1;
+  }
+
+  .lab__entry--offset .lab__title {
+    grid-column: 2 / span 6;
+  }
+
+  .lab__entry--offset .lab__kind {
+    grid-column: 1 / span 2;
+  }
+}
+
+@media (max-width: 768px) {
+  .lab__entry {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  .lab__entry > * {
+    grid-row: auto;
+  }
+
+  .lab__index,
+  .lab__entry--offset .lab__index {
+    grid-column: 1 / span 1;
+    text-align: left;
+  }
+
+  .lab__kind,
+  .lab__entry--offset .lab__kind {
+    grid-column: 2 / span 3;
+    text-align: right;
+  }
+
+  .lab__title,
+  .lab__entry--offset .lab__title {
+    grid-column: 1 / -1;
+  }
+}

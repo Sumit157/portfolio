@@ -1,0 +1,135 @@
+/*
+  About — editorial prose in a broken grid: lead statement at the left margin,
+  supporting note and interests pushed to the right edge, academic direction
+  running the full measure underneath as an apparatus table.
+*/
+
+.about {
+  display: block;
+  padding-bottom: clamp(4rem, 9vw, 8rem);
+}
+
+.about__grid {
+  display: grid;
+  grid-template-columns: repeat(var(--grid-columns), minmax(0, 1fr));
+  gap: var(--grid-gap);
+  align-items: start;
+  margin-top: clamp(2.5rem, 5vw, 4rem);
+}
+
+.about__lead {
+  grid-column: 1 / span 7;
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(1.5rem, 2.7vw, 2.6rem);
+  line-height: 1.24;
+  letter-spacing: -0.015em;
+  color: var(--text-primary);
+}
+
+.about__aside {
+  grid-column: 9 / span 4;
+}
+
+.about__note {
+  margin: 0;
+}
+
+.about__interests {
+  margin: clamp(1.75rem, 3vw, 2.5rem) 0 0;
+}
+
+.about__interests li {
+  padding-block: 0.6rem;
+  border-top: var(--rule-hair);
+}
+
+.about__interests li:last-child {
+  border-bottom: var(--rule-hair);
+}
+
+/* Academic direction — degree, institution, period */
+.about__education {
+  grid-column: 1 / -1;
+  margin: clamp(3rem, 6vw, 5rem) 0 0;
+}
+
+.about__edu-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 2fr) auto;
+  gap: 0.35rem clamp(1rem, 3vw, 2.5rem);
+  align-items: baseline;
+  padding-block: clamp(1rem, 2vw, 1.4rem);
+  border-top: var(--rule-hair);
+}
+
+.about__edu-row:last-child {
+  border-bottom: var(--rule-hair);
+}
+
+.about__edu-degree {
+  margin: 0;
+  color: var(--text-primary);
+}
+
+.about__edu-place {
+  margin: 0;
+  color: var(--text-primary);
+}
+
+.about__edu-affiliation {
+  color: var(--text-secondary);
+}
+
+.about__edu-period {
+  margin: 0;
+  text-align: right;
+  white-space: nowrap;
+}
+
+@media (max-width: 1024px) {
+  .about__grid {
+    grid-template-columns: repeat(8, minmax(0, 1fr));
+    gap: 1.25rem;
+  }
+
+  .about__lead {
+    grid-column: 1 / span 5;
+  }
+
+  .about__aside {
+    grid-column: 6 / span 3;
+  }
+}
+
+@media (max-width: 768px) {
+  .about__grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  .about__lead,
+  .about__aside,
+  .about__education {
+    grid-column: 1 / -1;
+  }
+
+  .about__aside {
+    margin-top: clamp(1.75rem, 5vw, 2.5rem);
+  }
+
+  .about__edu-row {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .about__edu-place {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+
+  .about__edu-period {
+    grid-column: 2;
+    grid-row: 1;
+  }
+}

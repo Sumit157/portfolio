@@ -1,0 +1,84 @@
+:root {
+  /* Colour — DESIGN.md §04. Near-black field, one restrained accent. */
+  --bg-primary: #0a0a0a;
+  --bg-secondary: #101010;
+  --bg-elevated: #151515;
+  --text-primary: #f2f2f2;
+  --text-secondary: #a3a3a3;
+  --text-muted: #666666;
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-strong: rgba(255, 255, 255, 0.14);
+  --accent: #00e5a0;
+
+  /* Type families — display / body / monospace (DESIGN.md §05) */
+  --font-display: 'Bahnschrift', 'DIN Alternate', 'Franklin Gothic Medium', Arial,
+    Helvetica, sans-serif;
+  --font-body: Arial, 'Helvetica Neue', Helvetica, sans-serif;
+  --font-mono: Consolas, 'SF Mono', 'Roboto Mono', ui-monospace, SFMono-Regular,
+    Menlo, monospace;
+
+  /* Type scale — DESIGN.md §06 */
+  --text-hero: clamp(2.75rem, 12.2vw, 12rem);
+  --text-section: clamp(2.75rem, 7vw, 7rem);
+  --text-project: clamp(2.25rem, 5.4vw, 5.25rem);
+  --text-index: clamp(2.75rem, 5.5vw, 5.5rem);
+  --text-statement: clamp(1.0625rem, 1.5vw, 1.5rem);
+  --text-lead: clamp(1rem, 1.2vw, 1.25rem);
+  --text-body: 1rem;
+  --text-body-small: 0.9375rem;
+  --text-meta: 0.6875rem;
+  --text-meta-small: 0.625rem;
+
+  /* Tracking */
+  --track-display: -0.035em;
+  --track-tight: -0.02em;
+  --track-meta: 0.18em;
+  --track-meta-wide: 0.24em;
+
+  /* Spacing rhythm */
+  --space-xs: 0.5rem;
+  --space-sm: 1rem;
+  --space-md: 2rem;
+  --space-lg: 3rem;
+  --space-xl: 6rem;
+  --space-2xl: 12rem;
+
+  /* Layout — DESIGN.md §07 */
+  --grid-columns: 12;
+  --grid-gap: clamp(1rem, 1.8vw, 2rem);
+  --content-max: 1440px;
+  --page-margin: clamp(1.25rem, 4.5vw, 5rem);
+  --masthead-height: 60px;
+
+  /* Rules — the structural armature */
+  --rule-strong: 1px solid var(--border-strong);
+  --rule-hair: 1px solid var(--border-subtle);
+
+  /* Motion */
+  --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
+  --ease-out-cubic: cubic-bezier(0.215, 0.61, 0.355, 1);
+  --ease-out-quart: cubic-bezier(0.165, 0.84, 0.44, 1);
+  --duration-fast: 0.2s;
+  --duration-base: 0.5s;
+  --duration-slow: 1s;
+  --duration-slower: 1.6s;
+
+  /* Z-index scale — documented layers only */
+  --z-index-nav: 1000;
+  --z-index-modal: 2000;
+  --z-index-toast: 3000;
+  --z-index-cursor: 9999;
+}
+
+/*
+  The interface is locked to the dark system defined in DESIGN.md.
+  Section themes must never invert (DESIGN.md §32 / design-taste §4.11).
+*/
+@media (prefers-contrast: more) {
+  :root {
+    --border-subtle: rgba(255, 255, 255, 0.22);
+    --border-strong: rgba(255, 255, 255, 0.42);
+    --text-secondary: #d4d4d4;
+    --text-muted: #a3a3a3;
+  }
+}

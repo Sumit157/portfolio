@@ -1,0 +1,150 @@
+/*
+  Type roles — DESIGN.md §05/§06.
+  Three voices only: display (DIN grotesque), body (neutral grotesque),
+  apparatus (tracked monospace).
+*/
+
+.t-display-hero,
+.t-display-section,
+.t-display-project,
+.t-index {
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+.t-display-hero {
+  font-size: var(--text-hero);
+  line-height: 0.86;
+  letter-spacing: var(--track-display);
+}
+
+.t-display-section {
+  font-size: var(--text-section);
+  line-height: 0.9;
+  letter-spacing: var(--track-display);
+}
+
+.t-display-project {
+  font-size: var(--text-project);
+  line-height: 0.94;
+  letter-spacing: var(--track-tight);
+}
+
+.t-index {
+  font-size: var(--text-index);
+  line-height: 0.8;
+  letter-spacing: -0.04em;
+  color: var(--text-muted);
+}
+
+.t-statement {
+  font-family: var(--font-display);
+  font-size: var(--text-statement);
+  font-weight: 500;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
+}
+
+.t-lead {
+  font-family: var(--font-body);
+  font-size: var(--text-lead);
+  font-weight: 400;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
+.t-body {
+  font-family: var(--font-body);
+  font-size: var(--text-body);
+  font-weight: 400;
+  line-height: 1.65;
+  color: var(--text-secondary);
+}
+
+.t-body-small {
+  font-family: var(--font-body);
+  font-size: var(--text-body-small);
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
+/* Monospace apparatus — technical metadata, labels, counters */
+.t-meta,
+.t-meta-small {
+  font-family: var(--font-mono);
+  font-weight: 400;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  font-variant-numeric: tabular-nums;
+}
+
+.t-meta {
+  font-size: var(--text-meta);
+  line-height: 1.4;
+  letter-spacing: var(--track-meta);
+}
+
+.t-meta-small {
+  font-size: var(--text-meta-small);
+  line-height: 1.4;
+  letter-spacing: var(--track-meta);
+}
+
+.t-meta--wide {
+  letter-spacing: var(--track-meta-wide);
+}
+
+.t-meta--primary {
+  color: var(--text-primary);
+}
+
+.t-meta--secondary {
+  color: var(--text-secondary);
+}
+
+.t-accent {
+  color: var(--accent);
+}
+
+.t-balance {
+  text-wrap: balance;
+}
+
+.t-pretty {
+  text-wrap: pretty;
+}
+
+/* Inline text link — underline draws from the left (DESIGN.md §27) */
+.t-link {
+  position: relative;
+  color: var(--text-secondary);
+  transition: color var(--duration-fast) var(--ease-out-cubic);
+}
+
+.t-link::after {
+  content: '';
+  position: absolute;
+  bottom: -3px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background-color: var(--accent);
+  transition: width var(--duration-base) var(--ease-out-expo);
+}
+
+.t-link:hover {
+  color: var(--text-primary);
+}
+
+.t-link:hover::after,
+.t-link:focus-visible::after {
+  width: 100%;
+}
+
+.t-link:focus-visible {
+  outline: none;
+  color: var(--text-primary);
+}

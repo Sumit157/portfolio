@@ -1,0 +1,222 @@
+/*
+  Hero — a full-viewport poster composition (DESIGN.md §10).
+  Register top: colophon left / statement right.
+  Register bottom: the name, stepped off the margin.
+  Register edge: rule + scroll / index cue.
+  Must read correctly with every animation disabled.
+*/
+
+.hero {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 100svh;
+  padding-top: var(--masthead-height);
+}
+
+.hero__body {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--space-lg);
+  padding-top: clamp(2rem, 6vh, 4.5rem);
+  padding-bottom: clamp(1.75rem, 5vh, 3rem);
+}
+
+.hero__top {
+  display: grid;
+  grid-template-columns: repeat(var(--grid-columns), minmax(0, 1fr));
+  gap: var(--grid-gap);
+  align-items: start;
+}
+
+.hero__facts {
+  grid-column: 1 / span 4;
+  margin: 0;
+}
+
+.hero__statement {
+  grid-column: 8 / span 5;
+}
+
+/* Colophon rows — label / value, separated by hairlines */
+.hero__fact {
+  display: grid;
+  grid-template-columns: minmax(0, 6.5rem) minmax(0, 1fr);
+  gap: 0.35rem 1rem;
+  padding-block: 0.7rem;
+  border-top: var(--rule-hair);
+}
+
+.hero__fact:first-child {
+  border-top: none;
+  padding-top: 0;
+}
+
+.hero__fact:last-child {
+  border-bottom: var(--rule-hair);
+  padding-bottom: 0.9rem;
+}
+
+.hero__fact dt {
+  font-family: var(--font-mono);
+  font-size: var(--text-meta);
+  letter-spacing: var(--track-meta);
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.hero__fact dd {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: var(--text-meta);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.hero__fact-value {
+  display: block;
+}
+
+.hero__fact-value--primary {
+  color: var(--text-primary);
+}
+
+.hero__statement-label {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.9rem;
+  font-family: var(--font-mono);
+  font-size: var(--text-meta);
+  letter-spacing: var(--track-meta);
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.hero__statement-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border-subtle);
+}
+
+.hero__statement-text {
+  margin: 0;
+  max-width: 34ch;
+}
+
+/* The name — stepped off the left margin */
+.hero__name {
+  --col: calc(
+    (100% - (var(--grid-columns) - 1) * var(--grid-gap)) / var(--grid-columns)
+  );
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--text-hero);
+  line-height: 0.86;
+  letter-spacing: var(--track-display);
+  color: var(--text-primary);
+}
+
+.hero__name-line {
+  display: block;
+  overflow: hidden;
+}
+
+/* The short line steps off the margin; the long line stays flush so the
+   name never overruns the measure (DESIGN.md §10). */
+.hero__name-line--step {
+  padding-left: calc(3 * (var(--col) + var(--grid-gap)));
+}
+
+.hero__name-word {
+  display: block;
+  will-change: transform;
+}
+
+/* Bottom register */
+.hero__register {
+  border-top: var(--rule-strong);
+}
+
+.hero__register-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
+  height: clamp(3.25rem, 7vh, 4.5rem);
+  max-width: var(--content-max);
+  margin-inline: auto;
+  padding-inline: var(--page-margin);
+}
+
+.hero__scroll {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: var(--font-mono);
+  font-size: var(--text-meta);
+  letter-spacing: var(--track-meta);
+  text-transform: uppercase;
+  color: var(--text-muted);
+  transition: color var(--duration-fast) var(--ease-out-cubic);
+}
+
+.hero__scroll:hover {
+  color: var(--text-primary);
+}
+
+.hero__scroll-mark {
+  color: var(--text-secondary);
+}
+
+@media (max-width: 1024px) {
+  .hero__name-line--step {
+    padding-left: calc(2 * (var(--col) + var(--grid-gap)));
+  }
+}
+
+@media (max-width: 900px) {
+  .hero__top {
+    gap: var(--space-md);
+  }
+
+  .hero__facts,
+  .hero__statement {
+    grid-column: 1 / -1;
+  }
+
+  .hero__statement {
+    margin-top: var(--space-sm);
+  }
+
+  .hero__statement-text {
+    max-width: 46ch;
+  }
+
+  .hero__name-line--step {
+    padding-left: calc(1 * (var(--col) + var(--grid-gap)));
+  }
+}
+
+/* Short viewports: the poster must still fit without scrolling */
+@media (max-height: 720px) and (min-width: 901px) {
+  .hero__name {
+    font-size: clamp(3rem, 9vw, 8rem);
+  }
+
+  .hero__body {
+    padding-top: clamp(1.5rem, 4vh, 2.5rem);
+    gap: var(--space-md);
+  }
+}
+
+@media (max-width: 560px) {
+  .hero__fact {
+    grid-template-columns: minmax(0, 5.5rem) minmax(0, 1fr);
+  }
+}

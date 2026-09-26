@@ -1,0 +1,121 @@
+/*
+  Contact — the conclusion. One oversized statement, then the three channels as
+  full-width apparatus rows. No form, no cards, no decoration (DESIGN.md §03).
+*/
+
+.contact {
+  display: block;
+  padding-bottom: clamp(4rem, 8vw, 7rem);
+}
+
+.contact__body {
+  display: grid;
+  grid-template-columns: repeat(var(--grid-columns), minmax(0, 1fr));
+  gap: var(--grid-gap);
+  align-items: start;
+  margin-top: clamp(2.5rem, 5vw, 4rem);
+}
+
+.contact__lead {
+  grid-column: 1 / span 9;
+  margin: 0;
+}
+
+.contact__list {
+  grid-column: 1 / -1;
+  margin-top: clamp(3rem, 6vw, 5rem);
+}
+
+.contact__item {
+  border-top: var(--rule-hair);
+}
+
+.contact__item:last-child {
+  border-bottom: var(--rule-hair);
+}
+
+.contact__link {
+  display: grid;
+  grid-template-columns: minmax(0, 9rem) minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--space-xs) clamp(1rem, 3vw, 2.5rem);
+  padding-block: clamp(1.1rem, 2.4vw, 1.75rem);
+}
+
+.contact__label {
+  color: var(--text-muted);
+}
+
+.contact__value {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(1.125rem, 2.2vw, 1.85rem);
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
+  overflow-wrap: anywhere;
+  transition: color var(--duration-fast) var(--ease-out-cubic);
+}
+
+.contact__arrow {
+  color: var(--text-muted);
+  transition:
+    color var(--duration-fast) var(--ease-out-cubic),
+    transform var(--duration-base) var(--ease-out-expo);
+}
+
+.contact__link:hover .contact__value,
+.contact__link:focus-visible .contact__value {
+  color: var(--accent);
+}
+
+.contact__link:hover .contact__arrow {
+  color: var(--accent);
+  transform: translateX(4px);
+}
+
+.contact__link:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 6px;
+}
+
+@media (max-width: 1024px) {
+  .contact__body {
+    grid-template-columns: repeat(8, minmax(0, 1fr));
+    gap: 1.25rem;
+  }
+
+  .contact__lead {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 768px) {
+  .contact__body {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  .contact__lead,
+  .contact__list {
+    grid-column: 1 / -1;
+  }
+
+  .contact__link {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .contact__label {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .contact__value {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  .contact__arrow {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+  }
+}

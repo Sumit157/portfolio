@@ -1,0 +1,222 @@
+/*
+  Masthead — a fixed publication band, not a navbar (DESIGN.md §09).
+  Hairline base, mono apparatus, one accent square as the identity mark.
+*/
+
+.masthead {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: var(--z-index-nav);
+  background: var(--bg-primary);
+  border-bottom: var(--rule-strong);
+}
+
+.masthead__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
+  height: var(--masthead-height);
+  max-width: var(--content-max);
+  margin-inline: auto;
+  padding-inline: var(--page-margin);
+}
+
+.masthead__brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 0;
+}
+
+.masthead__mark {
+  width: 7px;
+  height: 7px;
+  flex: none;
+  background: var(--accent);
+}
+
+.masthead__name {
+  font-family: var(--font-mono);
+  font-size: var(--text-meta);
+  letter-spacing: var(--track-meta-wide);
+  text-transform: uppercase;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.masthead__role {
+  font-family: var(--font-mono);
+  font-size: var(--text-meta);
+  letter-spacing: var(--track-meta);
+  text-transform: uppercase;
+  color: var(--text-muted);
+  white-space: nowrap;
+  padding-left: 0.75rem;
+  border-left: var(--rule-hair);
+}
+
+.masthead__links {
+  display: flex;
+  align-items: center;
+  gap: clamp(1.25rem, 2.6vw, 2.75rem);
+}
+
+.masthead__link {
+  position: relative;
+  display: inline-block;
+  padding-block: 0.35rem;
+  font-family: var(--font-mono);
+  font-size: var(--text-meta);
+  letter-spacing: var(--track-meta);
+  text-transform: uppercase;
+  color: var(--text-muted);
+  transition: color var(--duration-fast) var(--ease-out-cubic);
+}
+
+.masthead__link::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 1px;
+  background: var(--text-primary);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform var(--duration-base) var(--ease-out-expo);
+}
+
+.masthead__link:hover {
+  color: var(--text-primary);
+}
+
+.masthead__link:hover::after {
+  transform: scaleX(1);
+}
+
+.masthead__link.is-active {
+  color: var(--text-primary);
+}
+
+.masthead__link.is-active::after {
+  background: var(--accent);
+  transform: scaleX(1);
+}
+
+.masthead__toggle {
+  display: none;
+  font-family: var(--font-mono);
+  font-size: var(--text-meta);
+  letter-spacing: var(--track-meta);
+  text-transform: uppercase;
+  color: var(--text-primary);
+  padding: 0.5rem 0;
+  cursor: pointer;
+}
+
+.masthead__toggle:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+
+/* Mobile drawer — a deliberate full-screen index, not a shrunk desktop nav */
+.nav-drawer {
+  position: fixed;
+  inset: 0;
+  z-index: calc(var(--z-index-nav) + 1);
+  background: var(--bg-primary);
+  display: flex;
+  flex-direction: column;
+}
+
+.nav-drawer__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: var(--masthead-height);
+  padding-inline: var(--page-margin);
+  border-bottom: var(--rule-strong);
+}
+
+.nav-drawer__close {
+  font-family: var(--font-mono);
+  font-size: var(--text-meta);
+  letter-spacing: var(--track-meta);
+  text-transform: uppercase;
+  color: var(--text-primary);
+  padding: 0.5rem 0;
+  cursor: pointer;
+}
+
+.nav-drawer__close:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+
+.nav-drawer__list {
+  list-style: none;
+  margin: 0;
+  padding: 0 var(--page-margin);
+}
+
+.nav-drawer__item {
+  border-bottom: var(--rule-hair);
+}
+
+.nav-drawer__link {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  padding-block: clamp(1.1rem, 5vw, 1.75rem);
+  color: var(--text-primary);
+  transition: color var(--duration-fast) var(--ease-out-cubic);
+}
+
+.nav-drawer__link:hover,
+.nav-drawer__link.is-active {
+  color: var(--accent);
+}
+
+.nav-drawer__index {
+  font-family: var(--font-mono);
+  font-size: var(--text-meta);
+  letter-spacing: var(--track-meta);
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.nav-drawer__label {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(2rem, 11vw, 3.25rem);
+  line-height: 1;
+  letter-spacing: var(--track-tight);
+}
+
+.nav-drawer__foot {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  padding: var(--space-md) var(--page-margin) calc(var(--space-md) + env(safe-area-inset-bottom, 0px));
+}
+
+@media (max-width: 900px) {
+  .masthead__links {
+    display: none;
+  }
+
+  .masthead__toggle {
+    display: block;
+  }
+
+  .masthead__role {
+    display: none;
+  }
+}
