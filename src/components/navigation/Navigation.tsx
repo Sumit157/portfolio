@@ -10,12 +10,20 @@ interface NavigationProps {
 export function Navigation({ items }: NavigationProps) {
   const [activeSection, setActiveSection] = useState<string>('hero');
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const { scrollTo } = useLenis();
   const toggleRef = useRef<HTMLButtonElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
   const wasOpen = useRef(false);
 
   const navItems = items.slice(1);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 24);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
 
   useEffect(() => {
     const sections = items
@@ -83,7 +91,10 @@ export function Navigation({ items }: NavigationProps) {
   };
 
   return (
-    <nav className="masthead" aria-label="Main navigation">
+    <nav
+      className={clsx('masthead', scrolled && 'is-scrolled')}
+      aria-label="Main navigation"
+    >
       <div className="masthead__inner">
         <a
           href="#hero"
@@ -92,8 +103,10 @@ export function Navigation({ items }: NavigationProps) {
           aria-current={activeSection === 'hero' ? 'page' : undefined}
         >
           <span className="masthead__mark" aria-hidden="true" />
-          <span className="masthead__name">{items[0].label}</span>
-          <span className="masthead__role">Software Engineer</span>
+          <span className="masthead__id">
+            <span className="masthead__name">{items[0].label}</span>
+            <span className="masthead__role">Software Engineer</span>
+          </span>
         </a>
 
         <ul className="masthead__links">
