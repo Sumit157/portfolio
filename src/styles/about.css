@@ -57,7 +57,13 @@
 
 .about__edu-row {
   display: grid;
-  grid-template-columns: minmax(0, 1.1fr) minmax(0, 2fr) auto;
+  /*
+    Each row is its own grid. The period column is a fixed width (sized for the
+    longest period, "Expected 2027") rather than `auto` — a content-sized column
+    would vary per row and push the two `fr` columns out of vertical alignment,
+    so the institution text would not line up between entries.
+  */
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 2fr) 7.5rem;
   gap: 0.35rem clamp(1rem, 3vw, 2.5rem);
   align-items: baseline;
   padding-block: clamp(1rem, 2vw, 1.4rem);

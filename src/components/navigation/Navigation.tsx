@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { useLenis } from '@/components/layout/ScrollProvider';
 import type { NavigationItem } from '@/data/navigation';
 import { clsx } from '@/utils/clsx';
@@ -136,7 +137,7 @@ export function Navigation({ items }: NavigationProps) {
         </button>
       </div>
 
-      {drawerOpen && (
+      {drawerOpen && createPortal(
         <div
           id="nav-drawer"
           className="nav-drawer"
@@ -182,7 +183,8 @@ export function Navigation({ items }: NavigationProps) {
             <span className="t-meta">Portfolio — Edition 2026</span>
             <span className="t-meta">{items[0].label}</span>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </nav>
   );
